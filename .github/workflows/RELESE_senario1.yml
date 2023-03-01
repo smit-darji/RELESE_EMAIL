@@ -9,32 +9,46 @@ on:
 
 
 jobs:
-  send-release-notes:
+  send-email:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14.x'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Generate Release Notes
-      run: node generate-release-notes.js
-
+    - uses: actions/checkout@v2
     - name: Send Email
-      uses: dawidd6/action-send-mail@v2.2.0
+      uses: dawidd6/action-send-mail@v3
       with:
-        server_address: smtp.sendgrid.net
+        server_address: smtp.gmail.com
         server_port: 587
-        username: ${{ secrets.SENDGRID_USERNAME }}
-        password: ${{ secrets.SENDGRID_PASSWORD }}
-        subject: "Weekly Release Notes"
-        body: ${{ steps.generate-release-notes.outputs.releaseNotes }}
-        from: "smit.softvan@gmail.com"
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "New Release: ${{ github.event.release.tag_name }}"
+        body: "A new release has been published: ${{ github.event.release.html_url }}"
         to: "sahilvandra.softvan@gmail.com"
+  # send-release-notes:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+
+  #   - name: Setup Node.js
+  #     uses: actions/setup-node@v2
+  #     with:
+  #       node-version: '14.x'
+
+  #   - name: Install dependencies
+  #     run: npm install
+
+  #   - name: Generate Release Notes
+  #     run: node generate-release-notes.js
+
+  #   - name: Send Email
+  #     uses: dawidd6/action-send-mail@v2.2.0
+  #     with:
+  #       server_address: smtp.sendgrid.net
+  #       server_port: 587
+  #       username: ${{ secrets.SENDGRID_USERNAME }}
+  #       password: ${{ secrets.SENDGRID_PASSWORD }}
+  #       subject: "Weekly Release Notes"
+  #       body: ${{ steps.generate-release-notes.outputs.releaseNotes }}
+  #       from: "smit.softvan@gmail.com"
+  #       to: "sahilvandra.softvan@gmail.com"
