@@ -30,8 +30,9 @@ jobs:
 
           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
           echo "----------1-----------"
-          echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
-
+          releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
+          
+          echo "$releases"
           message="New releases available:"
 
           # Use a loop to extract information for each release
