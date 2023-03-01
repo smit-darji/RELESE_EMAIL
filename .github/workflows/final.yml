@@ -26,11 +26,11 @@ jobs:
               url=$(echo "$release" | jq -r '.url')
               body=$(echo "$release" | jq -r '.body')    
               message="Release $name ($tag) is now available. Download it from ($url)}.\n Description is :$body\n\n"
-              
+
               all_messages="$all_messages$message" 
           done
-          
-          echo -e "$all_messages"
+
+          echo details= "$all_messages" >>$GITHUB_OUTPUT
 
 
       - name: Print
