@@ -1,8 +1,13 @@
 name: Weekly Release Notes Email
+# on:
+#   schedule:
+#     # - cron: '0 0 * * 1' # Runs every Monday at 12am UTC
+#     - cron: '*/1 * * * *' # Runs every Monday at 12am UTC
 on:
-  schedule:
-    # - cron: '0 0 * * 1' # Runs every Monday at 12am UTC
-    - cron: '*/5 * * * *' # Runs every Monday at 12am UTC
+  release:
+    types: [published]
+
+
 jobs:
   send-release-notes:
     runs-on: ubuntu-latest
