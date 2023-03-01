@@ -1,4 +1,3 @@
----
 name: Weekly Release Email with format_details
 on: push
 jobs:
