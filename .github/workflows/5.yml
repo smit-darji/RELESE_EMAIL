@@ -31,7 +31,7 @@ jobs:
           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
           echo "----------1-----------"
           echo releases=$(echo $releases | jq -r '.[] | {"name": ".name", "tag": ".tag_name", "url": ".html_url", "body": ".body"} | @json' | jq -s .)
-          cat /home/runner/work/_temp/4971c685-eacc-4aa9-8675-cae3881beeaa.sh
+          
           
           detail=""
           
