@@ -19,7 +19,7 @@ jobs:
         run: |
           last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
           releases=$(curl -s "https://api.github.com/repos/<owner>/<repo>/releases?per_page=100&since=$last_week")
-          echo "::set-output name=releases::$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)"
+          echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .) >> $GITHUB_OUTPUT
 
       - name: Format Release Details
         id: format_details
@@ -37,6 +37,9 @@ jobs:
           echo "details=$(echo -e "$details")" >> $GITHUB_OUTPUT
       - name: Print
         run: |
+          echo "print releses-------------------------"
+          echo "${{ steps.get_releases.outputs.releases }}"
+          echo "print Detaisl-------------------------"
           echo "${{ steps.format_details.outputs.details }}"
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
