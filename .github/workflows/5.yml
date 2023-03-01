@@ -18,6 +18,7 @@ jobs:
 
           echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .) >> $GITHUB_OUTPUT
 
+          echo $releases
       - name: Print
         run: |
           echo ${{ steps.get_releases.outputs.releases }}
