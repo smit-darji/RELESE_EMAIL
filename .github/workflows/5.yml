@@ -34,7 +34,8 @@ jobs:
           
           message=""
 
-          for release in $(echo "$releases" | jq -c '.[]'); do
+          for release in $(echo "$releases" | jq -c '.[]'); 
+          do
               name=$(echo "$release" | jq -r '.name')
               tag=$(echo "$release" | jq -r '.tag')
               url=$(echo "$release" | jq -r '.url')
