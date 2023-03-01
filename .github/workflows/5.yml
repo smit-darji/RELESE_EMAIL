@@ -35,7 +35,9 @@ jobs:
               details+="- **Description:**\n$body\n\n"
           done
           echo "details=$(echo -e "$details")" >> $GITHUB_OUTPUT
-
+      - name: Print
+        run: |
+          echo "${{ steps.format_details.outputs.details }}"
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
         with:
