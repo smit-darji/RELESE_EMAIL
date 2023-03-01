@@ -25,15 +25,12 @@ jobs:
               tag=$(echo "$release" | jq -r '.tag')
               url=$(echo "$release" | jq -r '.url')
               body=$(echo "$release" | jq -r '.body')    
-              message="Release $name ($tag) is now available. 
-              Download it from ($url)}.\n 
-              Description is :$body\n\n"
+              message="Release $name ($tag) is now available. Download it from ($url)}.\n Description is :$body\n\n"
 
-              all_messages="$all_messages 
-              $message" 
+              all_messages="$all_messages$message" 
           done
 
-
+          
           echo "message_body=\"$all_messages\"" >> $GITHUB_OUTPUT
 
       - name: Print
