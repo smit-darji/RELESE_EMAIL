@@ -1,8 +1,10 @@
 name: Weekly Release Email
-
 on:
-  schedule:
-    - cron: '40 13 * * 3' # Run every Sunday at midnight
+  release:
+    types: [published]
+# on:
+#   schedule:
+#     - cron: '40 13 * * 3' # Run every Sunday at midnight
 
 jobs:
   send-email:
