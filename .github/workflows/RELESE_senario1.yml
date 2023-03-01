@@ -24,8 +24,7 @@ jobs:
         body: |
           A new release has been published: ${{ github.event.release.html_url }}
           
-          Release Notes:
-          $(cat release-body.txt)
+          Release Notes: $(cat release-body.txt)
           
           Details:
           Repository: ${{ github.event.repository.name }}
