@@ -38,6 +38,8 @@ jobs:
           done
 
           echo detail=$(echo -e "$details") >> $GITHUB_OUTPUT
+          echo "-----------------------------------------"
+          echo "Details are:::"$details
 
       - name: Print
         run: |
