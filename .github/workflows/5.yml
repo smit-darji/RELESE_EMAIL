@@ -4,24 +4,24 @@ jobs:
   send-email:
     runs-on: ubuntu-latest
     outputs:
-      releases: ${{ steps.get_releases.outputs.releases }}
+      # releases: ${{ steps.get_releases.outputs.releases }}
       details: ${{ steps.format_details.outputs.details }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Get Last Week's Releases
-        id: get_releases
-        run: |
-          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
+      # - name: Get Last Week's Releases
+      #   id: get_releases
+      #   run: |
+      #     last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
 
-          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
+      #     releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
 
-          echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .) >> $GITHUB_OUTPUT
+      #     echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .) >> $GITHUB_OUTPUT
 
-          echo $(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
-      - name: Print
-        run: |
-          echo ${{ steps.get_releases.outputs.releases }}
+          
+      # - name: Print
+      #   run: |
+      #     echo ${{ steps.get_releases.outputs.releases }}
       
       - name: Format release notes
         id: format_details
@@ -30,9 +30,15 @@ jobs:
 
           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
 
+          echo releases_list=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
+
+          echo "releases_list is ::"
+          echo "---------------------"
+          echo $releases_list
+          echo "---------------------"
           detail=""
           
-          for release in $(echo "$releases" | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .); do
+          for release in $releases_list); do
             name=$(echo $release | jq -r ".name")
             tag=$(echo $release | jq -r ".tag_name")
             url=$(echo $release | jq -r "".html_url")
