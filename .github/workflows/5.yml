@@ -18,28 +18,28 @@ jobs:
           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
 
           echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .) >> $GITHUB_OUTPUT
-      - name: Format Release Details
-        id: format_details
-        run: |
-          details=""
+      # - name: Format Release Details
+      #   id: format_details
+      #   run: |
+      #     details=""
 
-          for release in $(echo "${{ steps.get_releases.outputs.releases }}" | jq -r '.[]'); do
-              name=$(echo $release | jq -r '.name')
-              tag=$(echo $release | jq -r '.tag')
-              url=$(echo $release | jq -r '.url')
-              body=$(echo $release | jq -r '.body')
-              details+="### $name ($tag)\n"
-              details+="- **URL:** $url\n"
-              details+="- **Description:**\n$body\n\n"
-          done
+      #     for release in $(echo "${{ steps.get_releases.outputs.releases }}" | jq -r '.[]'); do
+      #         name=$(echo $release | jq -r '.name')
+      #         tag=$(echo $release | jq -r '.tag')
+      #         url=$(echo $release | jq -r '.url')
+      #         body=$(echo $release | jq -r '.body')
+      #         details+="### $name ($tag)\n"
+      #         details+="- **URL:** $url\n"
+      #         details+="- **Description:**\n$body\n\n"
+      #     done
 
-          echo details=$(echo -e "$details") >> $GITHUB_OUTPUT
+      #     echo details=$(echo -e "$details") >> $GITHUB_OUTPUT
       - name: Print
         run: |
           echo "print releses-------------------------"
           echo "${{ steps.get_releases.outputs.releases }}"
-          echo "print Detaisl-------------------------"
-          echo "${{ steps.format_details.outputs.details }}"
+          # echo "print Detaisl-------------------------"
+          # echo "${{ steps.format_details.outputs.details }}"
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
         with:
