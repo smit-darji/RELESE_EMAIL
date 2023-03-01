@@ -36,19 +36,19 @@ jobs:
           echo "----------2-----------"
           echo $releases
           echo "----------3-----------"
-          detail=""
+          # detail=""
           
-          for release in $releases_list); do
-            name=$(echo $release | jq -r ".name")
-            tag=$(echo $release | jq -r ".tag_name")
-            url=$(echo $release | jq -r "".html_url")
-            body=$(echo $release | jq -r ".body")
-            detail+="### $name ($tag)\n"
-            detail+="- **URL:** $url\n"
-            detail+="- **Description:**\n$body\n\n"
-          done
-          echo "details  are:::"$detail
-          echo details=$detail >> $GITHUB_OUTPUT
+          # for release in $releases_list); do
+          #   name=$(echo $release | jq -r ".name")
+          #   tag=$(echo $release | jq -r ".tag_name")
+          #   url=$(echo $release | jq -r "".html_url")
+          #   body=$(echo $release | jq -r ".body")
+          #   detail+="### $name ($tag)\n"
+          #   detail+="- **URL:** $url\n"
+          #   detail+="- **Description:**\n$body\n\n"
+          # done
+          # echo "details  are:::"$detail
+          # echo details=$detail >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
