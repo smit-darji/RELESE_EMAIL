@@ -22,10 +22,16 @@ jobs:
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "New Release: ${{ github.event.release.tag_name }}"
         body: |
-          "A new release has been published: ${{ github.event.release.html_url }}"
+          A new release has been published: ${{ github.event.release.html_url }}
           
-        Release Notes:
+          Release Notes:
           $(cat release-body.txt)
+          
+          Details:
+          Repository: ${{ github.event.repository.name }}
+          Tag Name: ${{ github.event.release.tag_name }}
+          Author: ${{ github.event.release.author.login }}
+          Published at: ${{ github.event.release.published_at }}
         to: "sahilvandra.softvan@gmail.com"
         from: "smit.softvan@gmail.com"
   # send-release-notes:
