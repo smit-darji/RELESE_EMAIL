@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Get Release Body
+      id: get_release_body
+      run: echo "${{ github.event.release.body }}" > release-body.txt
     - name: Send Email
       uses: dawidd6/action-send-mail@v3
       with:
