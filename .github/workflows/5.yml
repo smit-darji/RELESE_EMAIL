@@ -4,7 +4,7 @@ jobs:
   send-email:
     runs-on: ubuntu-latest
     outputs:
-      details: ${{ steps.format_details.outputs.details }}
+      message_body: ${{ steps.format_details.outputs.message_body }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -28,13 +28,13 @@ jobs:
               body=$(echo "$release" | jq -r '.body')
               message="New releases available :$name  $tag is now available. Download it from  $url and description is :$body"
               echo "----------1-----------"
-              echo "$message"
+              echo message_body="$message" >> $GITHUB_OUTPUT
           done
 
 
       - name: Print
         run: |
-          echo detail: ${{ steps.format_details.outputs.details }}
+          echo detail: ${{ steps.format_details.outputs.message_body }}
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
@@ -49,7 +49,7 @@ jobs:
 
             Here are the releases created in the last week:
 
-            ${{ steps.format_details.outputs.details }} 
+            ${{ steps.format_details.outputs.message_body }}
 
             Regards,
             Your GitHub Action
