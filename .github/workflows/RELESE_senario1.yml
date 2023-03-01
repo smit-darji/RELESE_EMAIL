@@ -23,6 +23,7 @@ jobs:
         subject: "New Release: ${{ github.event.release.tag_name }}"
         body: "A new release has been published: ${{ github.event.release.html_url }}"
         to: "sahilvandra.softvan@gmail.com"
+        from: "smit.softvan@gmail.com"
   # send-release-notes:
   #   runs-on: ubuntu-latest
 
