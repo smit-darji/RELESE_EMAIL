@@ -1,11 +1,11 @@
 name: Weekly Release Notes Email
-# on:
-#   schedule:
-#     # - cron: '0 0 * * 1' # Runs every Monday at 12am UTC
-#     - cron: '*/1 * * * *' # Runs every Monday at 12am UTC
 on:
-  release:
-    types: [published]
+  schedule:
+#     # - cron: '0 0 * * 1' # Runs every Monday at 12am UTC
+    - cron: '*/1 * * * *' 
+# on:
+#   release:
+#     types: [published]
 
 
 jobs:
