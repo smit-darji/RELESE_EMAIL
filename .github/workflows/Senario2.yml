@@ -1,30 +1,30 @@
-name: Weekly Release Email
-on:
-  release:
-    types: [published]
+# name: Weekly Release Email
 # on:
-#   schedule:
-#     - cron: '40 13 * * 3' # Run every Sunday at midnight
+#   release:
+#     types: [published]
+# # on:
+# #   schedule:
+# #     - cron: '40 13 * * 3' # Run every Sunday at midnight
 
-jobs:
-  send-email:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+# jobs:
+#   send-email:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v2
 
-      - name: Get Releases
-        id: get_releases
-        run: echo "::set-output name=releases::$(curl -s https://api.github.com/repos/<owner>/<repo>/releases | jq -r '.[].body')"
+#       - name: Get Releases
+#         id: get_releases
+#         run: echo "::set-output name=releases::$(curl -s https://api.github.com/repos/<owner>/<repo>/releases | jq -r '.[].body')"
 
-      - name: Send Email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "New Release: ${{ github.event.release.tag_name }}"
-          body: ${{ steps.get_releases.outputs.releases }}
-          to: "sahilvandra.softvan@gmail.com"
-          from: "smit.softvan@gmail.com"
+#       - name: Send Email
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 587
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: "New Release: ${{ github.event.release.tag_name }}"
+#           body: ${{ steps.get_releases.outputs.releases }}
+#           to: "sahilvandra.softvan@gmail.com"
+#           from: "smit.softvan@gmail.com"

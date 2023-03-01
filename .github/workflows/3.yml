@@ -26,3 +26,5 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "New Release: ${{ github.event.release.tag_name }}"
           body: ${{ steps.get_releases.outputs.releases }}
+          to: "sahilvandra.softvan@gmail.com"
+          from: "smit.softvan@gmail.com"
