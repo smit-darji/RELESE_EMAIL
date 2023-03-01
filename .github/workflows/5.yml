@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       releases: ${{ steps.get_releases.outputs.releases }}
-      details: ${{ steps.format_details.outputs.details }}
+      detail: ${{ steps.format_details.outputs.detail }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -27,7 +27,6 @@ jobs:
         id: format_details
         run: |
           details=""
-
           for release in $(echo "${{ steps.get_releases.outputs.releases }}" | jq -r '.[]'); do
               name=$(echo $release | jq -r '.name')
               tag=$(echo $release | jq -r '.tag')
@@ -38,11 +37,11 @@ jobs:
               details+="- **Description:**\n$body\n\n"
           done
 
-          echo details=$(echo -e "$details") >> $GITHUB_OUTPUT
+          echo detail=$(echo -e "$details") >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
-          echo ${{ steps.format_details.outputs.details }}
+          echo ${{ steps.format_details.outputs.detail }}
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
