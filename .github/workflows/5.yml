@@ -32,20 +32,21 @@ jobs:
           echo "----------1-----------"
           echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
 
-          
-          detail=""
-          
-          for releases in $(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .); do
-            name=$(echo $releases | jq -r ".name")
-            tag=$(echo $releases | jq -r ".tag_name")
-            url=$(echo $releases | jq -r "".html_url")
-            body=$(echo $releases | jq -r ".body")
-            detail+="### $name ($tag)\n"
-            detail+="- **URL:** $url\n"
-            detail+="- **Description:**\n$body\n\n"
+          message="New releases available:"
+
+          # Use a loop to extract information for each release
+          for release in $(echo "$releases" | jq -c '.[]'); do
+              name=$(echo "$release" | jq -r '.name')
+              tag=$(echo "$release" | jq -r '.tag')
+              url=$(echo "$release" | jq -r '.url')
+              body=$(echo "$release" | jq -r '.body')
+
+              # Add release information to the message
+              message+="\n\n$name ($tag)\n$url\n$body"
           done
-          echo "details  are:::"$detail
-          echo details=$detail >> $GITHUB_OUTPUT
+
+          # Print the message
+          echo -e "$message"
 
       - name: Print
         run: |
