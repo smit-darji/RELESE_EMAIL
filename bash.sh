@@ -3,19 +3,6 @@ releases='[{"name": "v1.0.16", "tag": "v1.0.16", "url": "https://github.com/smit
 
 message=""
 
-# for release in $(echo "${releases}" | jq -r '.[] | @base64'); do
-#     # Decode the release JSON data
-#     _jq() {
-#      echo ${release} | base64 --decode | jq -r ${1}
-#     }
-    
-#     # Create a message for the release
-#     message="Release ${_jq '.name'} (${_jq '.tag'}) is now available. Download it from ${_jq '.url'}."
-
-#     # Print the message
-#     echo "${message}"
-# done
-# Use a loop to extract information for each release
 for release in $(echo "$releases" | jq -c '.[]'); do
     name=$(echo "$release" | jq -r '.name')
     tag=$(echo "$release" | jq -r '.tag')
