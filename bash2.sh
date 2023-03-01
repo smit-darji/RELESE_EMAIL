@@ -5,12 +5,6 @@ releases='[
     "url": "https://github.com/smit-darji/RELESE_EMAIL/releases/tag/v1.0.16",
     "body": "v1.0.16"
   },
-   {
-    "name": "hey this is demo of v1.0.8",
-    "tag": "v1.0.8",
-    "url": "https://github.com/smit-darji/RELESE_EMAIL/releases/tag/v1.0.8",
-    "body": "helolo this is demo of v1.0.8"
-  },
   {
     "name": "v1.0.15",
     "tag": "v1.0.15",
@@ -45,7 +39,13 @@ releases='[
     "name": "v1.0.9",
     "tag": "v1.0.9",
     "url": "https://github.com/smit-darji/RELESE_EMAIL/releases/tag/v1.0.9",
-    "body": "v1.0.9 nthis is main relese of weekl"
+    "body": "v1.0.9 this is main relese of weekl"
+  },
+  {
+    "name": "hey this is demo of v1.0.8",
+    "tag": "v1.0.8",
+    "url": "https://github.com/smit-darji/RELESE_EMAIL/releases/tag/v1.0.8",
+    "body": "helolo this is demo of v1.0.8"
   },
   {
     "name": "hello this is : v1.0.7",
@@ -96,17 +96,21 @@ releases='[
     "body": ""
   }
 ]'
-
-
-message=""
-
-for release in $(echo "$releases" | jq -c '.[]'); do
+releases_1=${releases//[^[:alnum:]]/}
+clean() {
+    local a=${1//[^[:alnum:]]/}
+    echo "${a,,}"
+}
+# Loop over each release in the JSON array
+for release in $(echo "$releases_1" | jq -c '.[]'); do
+    # Extract name, tag, and body from release object
     name=$(echo "$release" | jq -r '.name')
     tag=$(echo "$release" | jq -r '.tag')
-    url=$(echo "$release" | jq -r '.url')
     body=$(echo "$release" | jq -r '.body')
-    message="Release :$name  $tag is now available. Download it from  $url ,and description is :$body"
-    echo "$message"
+    
+    # Format release message
+    message="Release $name ($tag):\n$body\n\n"
+    
+    # Print release message
+    echo -e "$message"
 done
-
-# # Print the message
