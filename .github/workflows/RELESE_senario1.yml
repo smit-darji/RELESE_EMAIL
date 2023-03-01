@@ -1,11 +1,11 @@
 name: Weekly Release Notes Email
-on:
-  schedule:
-#     # - cron: '0 0 * * 1' # Runs every Monday at 12am UTC
-    - cron: '32 1 * * 3' 
 # on:
-#   release:
-#     types: [published]
+#   schedule:
+#     # - cron: '0 0 * * 1' # Runs every Monday at 12am UTC
+#     - cron: '*/1 * * * *' # Runs every Monday at 12am UTC
+on:
+  release:
+    types: [published]
 
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       id: get_release_body
       run: |    
         echo "${{ github.event.release.body }}" > release-body.txt
-        cat release-body.txt
+        
     - name: Send Email
       uses: dawidd6/action-send-mail@v3
       with:
