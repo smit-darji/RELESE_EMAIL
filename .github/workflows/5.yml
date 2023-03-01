@@ -31,7 +31,7 @@ jobs:
 
           detail=""
           
-          for release in $(echo "$releases" | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)); do
+          for release in $(echo "$releases" | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .); do
             name=$(echo $release | jq -r '.name')
           done
           echo "details  are:::"$detail
