@@ -29,6 +29,9 @@ jobs:
 
           releases=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases?per_page=100" | jq --arg last_week "$last_week" '.[] | select(.published_at >= ($last_week + "T00:00:00Z"))')
           detail=""
+          echo "-----------------------------"
+          echo "hey"$releases
+          echo "-----------------------------"
           for release in $(echo "$releases" | jq -r '.[]'); do
             name=$(echo $release | jq -r '.name')
           done
