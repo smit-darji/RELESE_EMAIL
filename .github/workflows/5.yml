@@ -27,8 +27,9 @@ jobs:
           last_week=`date -d "last week" "+%Y-%m-%d"`
 
           releases=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases?per_page=100" | jq --arg last_week "$last_week" '.[] | select(.published_at >= ($last_week + "T00:00:00Z"))')
-          # detail=""
-          # for release in $(echo "$releases" | jq -r '.[]'); do
+          detail=""
+          for release in $(echo "$releases" | jq -r '.[]'); do
+            echo $release
           #   name=$(echo $release | jq -r '.name')
           #   tag=$(echo $release | jq -r '.tag_name')
           #   url=$(echo $release | jq -r '.html_url')
@@ -36,9 +37,9 @@ jobs:
           #   detail+="### $name ($tag)\n"
           #   detail+="- **URL:** $url\n"
           #   detail+="- **Description:**\n$body\n\n"
-          # done
-          # echo "details  are:::"$detail
-          # echo details=$detail >> $GITHUB_OUTPUT
+          done
+          echo "details  are:::"$detail
+          echo details=$detail >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
