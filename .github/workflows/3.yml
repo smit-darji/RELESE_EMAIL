@@ -7,6 +7,8 @@ on:
 jobs:
   send-email:
     runs-on: ubuntu-latest
+    outputs:
+      releases: ${{ steps.get_releases.outputs.releases }} 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -17,6 +19,9 @@ jobs:
           last_week=`date -d "last week" "+%Y-%m-%d"`
           echo releases=$(curl -s https://api.github.com/repos/<owner>/<repo>/releases?since=$last_week | jq -r '.[].body') >>$GITHUB_OUTPUT
 
+      - name: Print reles
+        run: echo "${{steps.get_releases.outputs.releases}}"
+
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
         with:
@@ -25,6 +30,6 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "New Release: ${{ github.event.release.tag_name }}"
-          body: ${{ steps.get_releases.outputs.releases }}
+          body: ${{steps.get_releases.outputs.releases}}
           to: "sahilvandra.softvan@gmail.com"
           from: "smit.softvan@gmail.com"
