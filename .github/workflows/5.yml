@@ -29,21 +29,19 @@ jobs:
           last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
 
           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
-          echo "----------1-----------"
+
           releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
           
-          echo "$releases"
-          message="New releases available:"
+          message=""
 
-          # Use a loop to extract information for each release
           for release in $(echo "$releases" | jq -c '.[]'); do
               name=$(echo "$release" | jq -r '.name')
               tag=$(echo "$release" | jq -r '.tag')
               url=$(echo "$release" | jq -r '.url')
               body=$(echo "$release" | jq -r '.body')
-
-              # Add release information to the message
-              message+="\n\n$name ($tag)\n$url\n$body"
+              message="New releases available :$name  $tag is now available. Download it from  $url ,and description is :$body"
+              echo "----------1-----------"
+              echo "$message"
           done
 
           # Print the message
