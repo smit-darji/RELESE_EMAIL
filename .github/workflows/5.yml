@@ -30,12 +30,12 @@ jobs:
 
           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
           echo "----------1-----------"
-          echo releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
+          echo releases=$(echo $releases | jq -r '.[] | {"name": ".name", "tag": ".tag_name", "url": ".html_url", "body": ".body"} | @json' | jq -s .)
 
           
           detail=""
           
-          for releases in $(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .); do
+          for releases in $(echo $releases | jq -r '.[] | {"name": ".name", "tag": ".tag_name", "url": ".html_url", "body": ".body"} | @json' | jq -s .); do
             name=$(echo $releases | jq -r ".name")
             tag=$(echo $releases | jq -r ".tag_name")
             url=$(echo $releases | jq -r "".html_url")
