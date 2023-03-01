@@ -5,8 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       releases: ${{ steps.get_releases.outputs.releases }}
-      detail: ${{ steps.format_details.outputs.detail }}
-      release-notes: ${{ steps.format-release-notes.outputs.release-notes }}
+      details: ${{ steps.format_details.outputs.details }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -23,36 +22,26 @@ jobs:
         run: |
           echo ${{ steps.get_releases.outputs.releases }}
       
-      # - name: Format Release Details
-      #   id: format_details
-      #   run: |
-      #     details=""
-      #     for release in $(echo "${{ steps.get_releases.outputs.releases }}" | jq -r '.[]'); do
-      #         name=$(echo $release | jq -r '.name')
-      #         tag=$(echo $release | jq -r '.tag')
-      #         url=$(echo $release | jq -r '.url')
-      #         body=$(echo $release | jq -r '.body')
-      #         details+="### $name ($tag)\n"
-      #         details+="- **URL:** $url\n"
-      #         details+="- **Description:**\n$body\n\n"
-      #     done
-
-      #     echo detail=$(echo -e "$details") >> $GITHUB_OUTPUT
-      #     echo "-----------------------------------------"
-      #     echo "Details are:::"$details
       - name: Format release notes
-        id: format-release-notes
         run: |
           last_week=$(date -v-1w +%Y-%m-%d)
-          echo "Last week: $last_week"
-          echo "Release notes:"
-          releases=$(sed -n "/## \[$last_week\]/,/##/p" CHANGELOG.md | sed '1d;$d')
-          formatted_releases=$(echo "$releases" | awk '/^##/ {print s} {s = s "\n" $0} END {print s}')
-          echo release-notes=$formatted_releases >> $GITHUB_OUTPUT
+          releases=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases?per_page=100" | jq --arg last_week "$last_week" '.[] | select(.published_at >= ($last_week + "T00:00:00Z"))')
+          detail=""
+          for release in $(echo "$releases" | jq -r '.[]'); do
+            name=$(echo $release | jq -r '.name')
+            tag=$(echo $release | jq -r '.tag_name')
+            url=$(echo $release | jq -r '.html_url')
+            body=$(echo $release | jq -r '.body')
+            detail+="### $name ($tag)\n"
+            detail+="- **URL:** $url\n"
+            detail+="- **Description:**\n$body\n\n"
+          done
+          echo "details  are:::"$detail
+          echo details=$detail >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
-          echo ${{ steps.format-release-notes.outputs.release-notes }}
+          echo detail: ${{ steps.format_details.outputs.details }}
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
