@@ -27,10 +27,10 @@ jobs:
         run: |
           last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
 
-          releases=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases?per_page=100" | jq --arg last_week "$last_week" '.[] | select(.published_at >= ($last_week + "T00:00:00Z"))')
+          releases=releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
           detail=""
           echo "-----------------------------"
-          echo "hey"$releases
+          echo "hey ---"$releases
           echo "-----------------------------"
           for release in $(echo "$releases" | jq -r '.[]'); do
             name=$(echo $release | jq -r '.name')
