@@ -1,8 +1,9 @@
 name: Weekly Release Email
 
-on:
-  release:
-    types: [published]
+on: push
+# on:
+#   release:
+#     types: [published]
 
 jobs:
   send-email:
