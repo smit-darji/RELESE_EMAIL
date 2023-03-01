@@ -27,7 +27,7 @@ jobs:
         run: |
           last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
 
-          releases=releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
+          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
 
           detail=""
           
