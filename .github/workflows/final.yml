@@ -19,7 +19,7 @@ jobs:
           releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
           
           message=""
-
+          echo "$releases"
           for release in $(echo "$releases" | jq -c '.[]'); 
           do
               name=$(echo "$release" | jq -r '.name')
