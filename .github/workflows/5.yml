@@ -1,0 +1,57 @@
+name: Weekly Release Email with format_details
+on: push
+# on:
+#   release:
+#     types: [published]
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    outputs:
+      releases: ${{ steps.get_releases.outputs.releases }} 
+      details: ${{ steps.format_details.outputs.details }} 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Get Last Week's Releases
+        id: get_releases
+        run: |
+          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
+          releases=$(curl -s "https://api.github.com/repos/<owner>/<repo>/releases?per_page=100&since=$last_week")
+          echo "::set-output name=releases::$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)"
+
+      - name: Format Release Details
+        id: format_details
+        run: |
+          details=""
+          for release in $(echo "${{ steps.get_releases.outputs.releases }}" | jq -r '.[]'); do
+              name=$(echo $release | jq -r '.name')
+              tag=$(echo $release | jq -r '.tag')
+              url=$(echo $release | jq -r '.url')
+              body=$(echo $release | jq -r '.body')
+              details+="### $name ($tag)\n"
+              details+="- **URL:** $url\n"
+              details+="- **Description:**\n$body\n\n"
+          done
+          echo "details=$(echo -e "$details")" >> $GITHUB_OUTPUT
+
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Weekly Release Update
+          body: |
+            Hello,
+
+            Here are the releases created in the last week:
+
+            ${{ steps.format_details.outputs.details }} 
+
+            Regards,
+            Your GitHub Action
+          to: "sahilvandra.softvan@gmail.com"
+          from: "smit.softvan@gmail.com"
