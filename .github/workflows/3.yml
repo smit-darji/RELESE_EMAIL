@@ -21,7 +21,7 @@ jobs:
           echo releases=$(curl -s https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?since=$last_week | jq -r '.[].body') >> $GITHUB_OUTPUT
 
       - name: Print reles
-        run: echo "${{ outputs.releases }}"
+        run: echo "${{ steps.get_releases.outputs.releases }}"
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
