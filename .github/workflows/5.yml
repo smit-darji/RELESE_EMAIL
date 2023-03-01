@@ -34,7 +34,7 @@ jobs:
 
           echo "releases is ::"
           echo "----------2-----------"
-          echo $releases
+          echo $(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
           echo "----------3-----------"
           # detail=""
           
