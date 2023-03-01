@@ -18,19 +18,18 @@ jobs:
 
           releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
           
-          message=""
+          all_messages=""
 
-          for release in $(echo "$releases" | jq -c '.[]'); 
-          do
+          for release in $(echo "$releases" | jq -c '.[]'); do
               name=$(echo "$release" | jq -r '.name')
               tag=$(echo "$release" | jq -r '.tag')
               url=$(echo "$release" | jq -r '.url')
-              body=$(echo "$release" | jq -r '.body')
-              message="New releases available :$name  $tag is now available. Download it from  $url and description is :$body"
-              echo "----------1-----------"
-              echo message_body="$message" >> $GITHUB_OUTPUT
-          done
+              body=$(echo "$release" | jq -r '.body')    
+              message="Release $name ($tag) is now available. Download it from ($url)}.\n Description is :$body\n\n"
 
+              all_messages="$all_messages$message" 
+          done
+          echo message_body="$all_messages" >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
