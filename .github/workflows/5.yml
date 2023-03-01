@@ -40,7 +40,7 @@ jobs:
               tag=$(echo "$release" | jq -r '.tag')
               url=$(echo "$release" | jq -r '.url')
               body=$(echo "$release" | jq -r '.body')
-              message="New releases available :$name  $tag is now available. Download it from  $url ,and description is :$body"
+              message="New releases available :$name  $tag is now available. Download it from  $url and description is :$body"
               echo "----------1-----------"
               echo "$message"
           done
