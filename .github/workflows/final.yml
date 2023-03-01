@@ -32,7 +32,6 @@ jobs:
 
           echo message_body=$($all_messages) >> $GITHUB_OUTPUT
 
-
       - name: Print
         run: |
           echo detail: ${{ steps.format_details.outputs.message_body }}
