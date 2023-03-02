@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       message_body: ${{ steps.format_details.outputs.message_body }}
+      contents: ${{ steps.read-file.outputs.contents }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -34,6 +35,16 @@ jobs:
           echo "------------------------------------"
           cat output.md
           echo output.md >> $GITHUB_OUTPUT
+
+      - name: Read file into variable
+        id: read-file
+        run: |
+          file_contents=$(cat output.md)
+          echo "contents=${file_contents}" >> $GITHUB_OUTPUT
+      
+      - name: Display variable contents
+        run: |
+          echo "File contents: ${{ steps.read-file.outputs.contents }}"
 
       - name: Print
         run: |
