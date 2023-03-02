@@ -47,12 +47,17 @@ jobs:
           subject: Weekly Release Update
           body: |
             Hello,
-
-            Here are the releases created in the last week:
-
-            ${{ steps.format_details.outputs.message_body }} 
-
-            Regards,
-            Your GitHub Action
+          
+            Here are the latest releases for RELESE_EMAIL:
+          
+            {% for release in releases %}
+            - {{ release.name }} - {{ release.tag }}
+              {{ release.body }}
+              {{ release.url }}
+          
+            {% endfor %}
+          
+            Thanks,
+            ChatGPT
           to: sahilvandra.softvan@gmail.com
           from: smit.softvan@gmail.com
