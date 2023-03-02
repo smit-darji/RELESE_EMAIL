@@ -31,7 +31,7 @@ jobs:
               all_messages="$all_messages$message" 
           done
 
-          echo message_body=(\"$all_messages\"| awk '{printf "%s\\n", $0}') >> $GITHUB_OUTPUT
+          echo message_body=($all_messages | awk '{printf "%s\\n", $0}') >> $GITHUB_OUTPUT
           echo "------------------------------------"
 
 
