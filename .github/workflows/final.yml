@@ -32,11 +32,11 @@ jobs:
 
           echo "message_body=\"$all_messages\""
           echo "------------------------------------"
-          echo "message_body=\"$all_messages\"" >> $GITHUB_OUTPUT
+          echo -e "message_body=\"$all_messages\"" >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
-          echo -e ${{ steps.format_details.outputs.message_body }} 
+          echo -e ${{ steps.format_details.outputs.message_body }}  
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
