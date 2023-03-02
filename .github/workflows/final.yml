@@ -34,7 +34,6 @@ jobs:
           echo -e "message_body=\"$all_messages\"" > output.md
           echo "------------------------------------"
           cat output.md
-          echo output.md >> $GITHUB_OUTPUT
 
       - name: Read file into variable
         id: read-file
