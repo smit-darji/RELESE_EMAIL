@@ -39,7 +39,7 @@ jobs:
         id: read-file
         run: |
           file_contents=$(cat output.md)
-          echo "contents=${file_contents}" >> $GITHUB_OUTPUT
+          # echo "contents=${file_contents}" >> $GITHUB_OUTPUT
       
       - name: Display variable contents
         run: |
