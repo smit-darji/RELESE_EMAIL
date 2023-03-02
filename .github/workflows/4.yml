@@ -1,0 +1,60 @@
+name: Send Release Email
+
+on:
+  push:
+    branches:
+      - Master
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyGithub PyYAML
+      
+      - name: Create email message
+        id: create_message
+        run: |
+          import yaml
+          import os
+          from github import Github
+          
+          releases = yaml.load(os.environ['RELEASES'])
+          github_token = os.environ['GITHUB_TOKEN']
+          repo = Github(github_token).get_repo(os.environ['GITHUB_REPOSITORY'])
+          subject = f"New releases for {repo.name}"
+          
+          body = "Hello,\n\n" \
+                 "New releases are available:\n\n"
+          for release in releases:
+            body += f"- [{release['name']}]({release['url']})\n"
+          
+          body += "\nThanks,\nGitHub"
+          message = {
+            'subject': subject,
+            'body': body,
+            'to': 'sahilvandra.softvan@gmail.com'
+          }
+          print(yaml.dump(message))
+          
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: ${{ steps.create_message.outputs.subject }}
+          body: ${{ steps.create_message.outputs.body }}
+          to: ${{ steps.create_message.outputs.to }}
+          starttls: true
