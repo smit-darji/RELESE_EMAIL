@@ -31,7 +31,7 @@ jobs:
               all_messages="$all_messages$message" 
           done
 
-          echo -e "message_body=\"$all_messages\"" >> $GITHUB_OUTPUT
+          echo "message_body=\"$all_messages\"" >> $GITHUB_OUTPUT
           echo "------------------------------------"
 
 
