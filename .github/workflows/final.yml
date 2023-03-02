@@ -35,7 +35,10 @@ jobs:
 
       - name: Print
         run: |
-          echo detail: ${{ steps.format_details.outputs.message_body }}
+          echo ${{ steps.format_details.outputs.message_body }} > output.md
+      - name: Print output
+        run: |
+          cat output.md
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
@@ -46,19 +49,13 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Weekly Release Update
           body: |
-            ${{ steps.format_details.outputs.message_body }}
             Hello,
 
-            Here are the latest releases for RELESE_EMAIL:
+            Here are the releases created in the last week:
 
-            {% for release in releases %}
-            - {{ release.name }} - {{ release.tag }}
-              {{ release.body }}
-              {{ release.url }}
+            ${{ steps.format_details.outputs.message_body }} 
 
-            {% endfor %}
-
-            Thanks,
-            ChatGPT
+            Regards,
+            Your GitHub Action
           to: sahilvandra.softvan@gmail.com
           from: smit.softvan@gmail.com
