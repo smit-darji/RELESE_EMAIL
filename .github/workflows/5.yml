@@ -19,7 +19,7 @@ jobs:
 
           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases" | jq -r '.[] | "Release \(.tag_name) (\(.name)) is now available. Download it from (\(.html_url))\n Description is :\n\n\(.body)"')
           releases_list=$(echo "$releases" | awk '{printf "%s\\n", $0}')
-          echo $releases_list
+          echo -e $releases_list
           echo "---------------------------------"
           echo message_body=$releases_list >> $GITHUB_OUTPUT
 
@@ -27,7 +27,7 @@ jobs:
 
       - name: Print
         run: |
-          echo ${{ steps.format_details.outputs.message_body }}  
+          echo -e ${{ steps.format_details.outputs.message_body }}  
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
