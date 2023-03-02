@@ -25,7 +25,7 @@ jobs:
 
       - name: Print
         run: |
-          echo -e ${{ steps.format_details.outputs.message_body }}  
+          echo ${{ steps.format_details.outputs.message_body }}  
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
