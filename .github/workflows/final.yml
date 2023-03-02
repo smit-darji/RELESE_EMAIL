@@ -30,9 +30,10 @@ jobs:
               all_messages="$all_messages$message" 
           done
 
-          echo "message_body=\"$all_messages\""
+          echo test = "message_body=\"$all_messages\""
           echo "------------------------------------"
-          echo -e "message_body=\"$all_messages\"" >> $GITHUB_OUTPUT
+          echo $test
+          echo "$test" >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
@@ -51,7 +52,7 @@ jobs:
 
             Here are the releases created in the last week:
 
-            ${{ steps.format_details.outputs.message_body }} 
+            echo -e ${{ steps.format_details.outputs.message_body }}
 
             Regards,
             Your GitHub Action
