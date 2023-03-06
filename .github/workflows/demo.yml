@@ -31,18 +31,18 @@ jobs:
           echo "-----------------"
           echo $releases
           echo "-------"
-          body=""
+          Message_body=""
           for release in $(echo "$releases" | jq -c '.[]'); do
               name=$(echo $release | jq -r '.name')
               tag=$(echo $release | jq -r '.tag')
               url=$(echo $release | jq -r '.url')
-              # body=$(echo $release | jq -r '.body')
+              body=$(echo $release | jq -r '.body')
               published_at=$(echo $release | jq -r '.published_at')
               formatted_date=$(date -d $published_at +'%Y-%m-%d %H:%M:%S')
-              message="New version is Release :$name Tag is : $tag. you can Show at $url.relese Date is:$formatted_date."
-              body="$body$message"
+              message="New version is Release :$name Tag is : $tag. you can Show at $url.relese Date is:$formatted_date. Description : $body"
+              Message_body="$body$message"
           done
-          echo body=$body >> $GITHUB_OUTPUT
+          echo body=$Message_body >> $GITHUB_OUTPUT
         # shell: bash
           
       - name: email is 
