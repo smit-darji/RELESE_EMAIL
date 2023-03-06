@@ -5,11 +5,21 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       message_body: ${{ steps.format_details.outputs.message_body }}
-      contents: ${{ steps.read-file.outputs.contents }}
+      releases: ${{ steps.get_release_details.outputs.releases }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
       
+      
+      - name: Get release details
+        id: get_release_details
+        run: |
+          releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
+          echo releases=$(echo $releases | jq -r '.[] | { name: .name, url: .html_url, published_at: .published_at, body: .body }') >> $GITHUB_OUTPUT
+      - name: Print
+        run: |
+          echo  ${{ steps.get_release_details.outputs.releases }}
+
       - name: Format release notes
         id: format_details
         run: |
@@ -38,6 +48,28 @@ jobs:
       - name: Print
         run: |
           echo -e ${{ steps.format_details.outputs.message_body }}  
+      
+      - name: Install Jinja2
+        run: |
+          python3 -m venv env
+          source env/bin/activate
+          pip install jinja2-cli
+
+      - name: Format email
+        id: format_email
+        run: |
+          source env/bin/activate
+          echo "${{ steps.get_release_details.outputs.releases }}" | jinja2 -e yaml - <<EOF
+          {% for release in releases %}
+          {{ release.name }}
+          {{ release.url }}
+          {{ release.published_at | strftime('%Y-%m-%d %H:%M:%S %z') }}
+
+          {{ release.body | indent(4) }}
+
+          {% endfor %}
+          EOF
+        shell: bash
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3

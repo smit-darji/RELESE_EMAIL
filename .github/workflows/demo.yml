@@ -1,38 +1,38 @@
-name: Send release details
+# name: Send release details
 
-on: push
+# on: push
 
-jobs:
-  send_email:
-    runs-on: ubuntu-latest
-    outputs:
-      releases: ${{ steps.get_release_details.outputs.releases }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+# jobs:
+#   send_email:
+#     runs-on: ubuntu-latest
+#     outputs:
+#       releases: ${{ steps.get_release_details.outputs.releases }}
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
 
-      - name: Get release details
-        id: get_release_details
-        run: |
-          releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
-          echo "releases:"$releases
-          echo "---------------------"
-          echo releases=$releases >> $GITHUB_OUTPUT
+#       - name: Get release details
+#         id: get_release_details
+#         run: |
+#           releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
+#           echo "releases:"$releases
+#           echo "---------------------"
+#           echo releases=$releases >> $GITHUB_OUTPUT
 
-      - name: Print release details
-        run: |
-          ${{ steps.get_release_details.outputs.releases }}
-      - name: Send email
-        uses: dawidd6/action-send-mail@v2.2.0
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Release details for ${GITHUB_REPOSITORY}
-          body: |
-            Release details for ${GITHUB_REPOSITORY}:
+#       - name: Print release details
+#         run: |
+#           ${{ steps.get_release_details.outputs.releases }}
+#       - name: Send email
+#         uses: dawidd6/action-send-mail@v2.2.0
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 587
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: Release details for ${GITHUB_REPOSITORY}
+#           body: |
+#             Release details for ${GITHUB_REPOSITORY}:
 
-            ${{ steps.get_release_details.outputs.releases }}
-          to: sahilvandra.softvan@gmail.com
-          from: smit.softvan@gmail.com
+#             ${{ steps.get_release_details.outputs.releases }}
+#           to: sahilvandra.softvan@gmail.com
+#           from: smit.softvan@gmail.com
