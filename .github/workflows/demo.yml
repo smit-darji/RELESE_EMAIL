@@ -32,7 +32,7 @@ jobs:
           echo $releases
           echo "-------"
           body=""
-          for release in $releases; do
+          for release in $(echo "$releases" | jq -c '.[]'); do
             name=$(echo $release | jq -r '.name')
             url=$(echo $release | jq -r '.url')
             published_at=$(echo $release | jq -r '.published_at')
