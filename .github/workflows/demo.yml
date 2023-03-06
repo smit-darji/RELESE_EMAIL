@@ -43,13 +43,13 @@ jobs:
             body="$body $message"
           done
           echo body=$body >> $GITHUB_OUTPUT
-          echo $body >> a.txt
-          echo "-------------cat-----------"
-          cat a.txt
-          file_contents=$(cat -e a.txt)
-          echo "---------------file_contents--------------------"
-          echo "$file_contents"
-        shell: bash
+          # echo $body >> a.txt
+          # echo "-------------cat-----------"
+          # cat a.txt
+          # file_contents=$(cat -e a.txt)
+          # echo "---------------file_contents--------------------"
+          # echo "$file_contents"
+        # shell: bash
           
       - name: email is 
         run: echo ${{ steps.format_email.outputs.body }}
