@@ -26,7 +26,7 @@ jobs:
               message="Release $name ($tag) is now available. Download it from ($url)}.\n Description is :$body\n\n"
               all_messages="$all_messages$message" 
           done
-          echo message_body=\"$all_messages\" >> $GITHUB_OUTPUT
+          echo message_body=$all_messages>> $GITHUB_OUTPUT
           echo "------------------------------------"
       - name: Print
         run: |

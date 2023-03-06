@@ -24,12 +24,15 @@ jobs:
       - name: Format email
         id: format_email
         run: |
-          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
-          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
-          releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
-          
-          all_messages=""
-           for release in $(echo "$releases" | jq -c '.[]'); do
+          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases")
+
+          releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body,published_at: .published_at} | @json' | jq -s .)
+
+          echo "-----------------"
+          echo $releases
+          echo "-------"
+          body=""
+          for release in $(echo "$releases" | jq -c '.[]'); do
               name=$(echo $release | jq -r '.name')
               tag=$(echo $release | jq -r '.tag')
               url=$(echo $release | jq -r '.url')
