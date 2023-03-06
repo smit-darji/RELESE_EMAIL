@@ -1,0 +1,34 @@
+name: Send release details
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get release details
+        id: get_release_details
+        run: |
+          releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
+          echo "::set-output name=releases::$releases"
+
+      - name: Send email
+        uses: dawidd6/action-send-mail@v2.2.0
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Release details for ${GITHUB_REPOSITORY}
+          body: |
+            Release details for ${GITHUB_REPOSITORY}:
+
+            ${{ steps.get_release_details.outputs.releases }}
+          to: sahilvandra.softvan@gmail.com
+          from: smit.softvan@gmail.com
