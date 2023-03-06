@@ -37,9 +37,7 @@ jobs:
 
       - name: Print
         run: |
-          echo -e ${{ steps.format_details.outputs.message_body }}  >> test.md
-          echo "---------------------------------------------"
-          cat test.md
+          echo -e ${{ steps.format_details.outputs.message_body }}  
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
@@ -54,7 +52,7 @@ jobs:
 
             Here are the releases created in the last week:
 
-            cat test.md
+            ${{ steps.format_details.outputs.message_body }}
 
             Regards,
             Your GitHub Action
