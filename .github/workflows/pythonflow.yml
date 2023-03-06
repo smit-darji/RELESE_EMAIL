@@ -44,11 +44,10 @@ jobs:
 
             Here are the releases created in the last week:
             
-            this is python
+            ${{ steps.my_step.outputs.output_body }}
             
             Regards,
             Your GitHub Action
         to: sahilvandra.softvan@gmail.com
         from: smit.softvan@gmail.com
 
-        
