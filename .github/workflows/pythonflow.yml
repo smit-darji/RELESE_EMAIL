@@ -27,7 +27,7 @@ jobs:
         g = Github(os.environ["GITHUB_TOKEN"])
 
         # Get a repository by its owner and name
-        repo = g.get_repo("owner/repo")
+        repo = g.get_repo("smit-darji/RELESE_EMAIL")
 
         # Get the latest release
         latest_release = repo.get_latest_release()
