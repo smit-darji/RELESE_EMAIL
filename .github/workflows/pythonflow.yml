@@ -23,6 +23,9 @@ jobs:
       run: |
 
         python send_release_email.py
+        output=$(python release_mail_generator.py )
+        echo "----------"
+        echo "$output"
     - name : get env
       run: |
         echo ${{ env.demo }}
