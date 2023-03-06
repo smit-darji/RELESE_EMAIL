@@ -42,7 +42,6 @@ jobs:
             message="New version is Release :$name  \n you can Show at : $url . \n relese Date is :$formatted_date.\n\n"
             body="$body $message"
           done
-          done
           echo body=$body >> $GITHUB_OUTPUT
       - name: email is 
         run: echo -e ${{ steps.format_email.outputs.body }}
