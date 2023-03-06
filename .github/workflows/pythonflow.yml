@@ -1,0 +1,36 @@
+name: Send Release Email
+
+on: push # Runs every Friday at 12pm UTC
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+          pip install jinja2
+
+      - name: Generate release email
+        id: format_email
+        run: python send_release_email.py
+
+      - name: Send email
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Release Details
+          body: ${{ steps.format_email.outputs.stdout }}
+          to: sahilvandra.softvan@gmail.com
+          from: smit.softvan@gmail.com
