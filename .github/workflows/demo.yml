@@ -51,7 +51,7 @@ jobs:
           echo "$file_contents"
           
       - name: email is 
-        run: echo  ${{ steps.format_email.outputs.body }}
+        run: echo   ${{ steps.format_email.outputs.body | sed 's/\\n/\/g' }}
 
       - name: Send email
         uses: dawidd6/action-send-mail@v2.2.0
