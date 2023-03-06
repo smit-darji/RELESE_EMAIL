@@ -41,3 +41,4 @@ email_body = template.render(repo_owner="smit-darji", repo_name="RELESE_EMAIL", 
 
 # Output the email body
 print(email_body)
+os.environ['email_body'] = email_body
