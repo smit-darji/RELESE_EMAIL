@@ -23,7 +23,7 @@ jobs:
         python send_release_email.py
         print("----------")
         print(email_body)
-        print("::set-output name=email_body::" + email_body)
+        # print("::set-output name=email_body::" + email_body)
 
     - name: Send email
       uses: dawidd6/action-send-mail@v2
