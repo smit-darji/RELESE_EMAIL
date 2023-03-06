@@ -14,8 +14,7 @@ jobs:
       - name: Get release details
         id: get_release_details
         run: |
-          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
-          releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases?per_page=100&since=$last_week)
+          releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
           echo releases=$releases >> $GITHUB_OUTPUT
 
       - name: Print release details
