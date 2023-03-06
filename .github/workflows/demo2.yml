@@ -21,20 +21,27 @@ jobs:
         run: |
           ${{ steps.get_release_details.outputs.releases }}
 
+      - name: Install Jinja2
+        run: |
+          python3 -m venv env
+          source env/bin/activate
+          pip install jinja2-cli
+
       - name: Format email
         id: format_email
-        uses: marvinpinto/action-jinja2@v2.1.0
-        with:
-          data: ${{ steps.get_release_details.outputs.releases }}
-          template: |
-            {% for release in data %}
-            {{ release.name }}
-            {{ release.url }}
-            {{ release.published_at | strftime('%Y-%m-%d %H:%M:%S %z') }}
+        run: |
+          source env/bin/activate
+          echo "${{ steps.get_release_details.outputs.releases }}" | jinja2 -e yaml -f - <<EOF
+          {% for release in releases %}
+          {{ release.name }}
+          {{ release.url }}
+          {{ release.published_at | strftime('%Y-%m-%d %H:%M:%S %z') }}
 
-            {{ release.body | indent(4) }}
+          {{ release.body | indent(4) }}
 
-            {% endfor %}
+          {% endfor %}
+          EOF
+        shell: bash
 
       - name: Send email
         uses: dawidd6/action-send-mail@v2.2.0
@@ -44,6 +51,6 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Release details for ${GITHUB_REPOSITORY}
-          body: ${{ steps.format_email.outputs.rendered }}
+          body: ${{ steps.format_email.stdout }}
           to: sahilvandra.softvan@gmail.com
           from: smit.softvan@gmail.com
