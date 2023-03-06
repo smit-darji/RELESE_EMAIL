@@ -30,9 +30,8 @@ jobs:
             name=$(echo $release | jq -r '.name')
             url=$(echo $release | jq -r '.url')
             published_at=$(echo $release | jq -r '.published_at')
-            body=$(echo $release | jq -r '.body')
             formatted_date=$(date -d $published_at +'%Y-%m-%d %H:%M:%S %z')
-            message="$name\n$url\n$formatted_date\n\n$body\n\n"
+            message="$name\n$url\n$formatted_date\n\n"
             body="$body$message"
           done
           echo body=$body >> $GITHUB_OUTPUT
