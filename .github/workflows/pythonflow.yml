@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       message_body: ${{ steps.format_details.outputs.message_body }}
-      contents: ${{ steps.read-file.outputs.contents }}
+      output_body: ${{ steps.read-file.outputs.output_body }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -24,13 +24,11 @@ jobs:
         python send_release_email.py >> temp.txt
         file_contents=$(cat temp.txt)
         echo "--------------------hello------------------------------"
-        echo $file_contents
+        echo output_body=$file_contents >> $GITHUB_ENV
     
     - name : get env
       run: |
-        echo ${{ env.demo }}
-        echo "-------"
-        echo ${{ steps.my_step.outputs.demo }}
+        echo ${{ steps.my_step.outputs.output_body }}
 
     - name: Send email
       uses: dawidd6/action-send-mail@v2
