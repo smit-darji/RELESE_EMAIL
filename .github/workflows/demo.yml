@@ -49,9 +49,10 @@ jobs:
           file_contents=$(cat -e a.txt)
           echo "---------------file_contents--------------------"
           echo "$file_contents"
+        shell: bash
           
       - name: email is 
-        run: echo  ${{ steps.format_email.outputs.body }}
+        run: echo ${{ steps.format_email.outputs.body }}
 
       - name: Send email
         uses: dawidd6/action-send-mail@v2.2.0
