@@ -1,53 +1,48 @@
-# name: Send release details
+name: Weekly Release Email
 
-# on: push
+on: push
 
-# jobs:
-#   send_email:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
-#       - name: Get release details
-#         id: get_release_details
-#         run: |
-#           releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
-#           echo "::set-output name=releases::$(echo $releases | jq -r '.[] | { name: .name, url: .html_url, published_at: .published_at, body: .body }')"
+      - name: Format release notes
+        id: format_details
+        run: |
+          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
+          releases=$(curl -s "https://api.github.com/repos/:owner/:repo/releases?per_page=100&since=$last_week")
+          releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
+          
+          all_messages=""
+          for release in $(echo "$releases" | jq -c '.[]'); do
+              name=$(echo $release | jq -r '.name')
+              tag=$(echo $release | jq -r '.tag')
+              url=$(echo $release | jq -r '.url')
+              body=$(echo $release | jq -r '.body')    
+              message="Release $name ($tag) is now available. Download it from ($url).\n\n"
+              all_messages="$all_messages$message" 
+          done
+          echo message_body=\"$all_messages\" >> $GITHUB_ENV
 
-#       - name: print
-#         run: |
-#           {{ steps.get_release_details.outputs.releases }} 
-#       - name: Install Jinja2
-#         run: |
-#           python3 -m venv env
-#           source env/bin/activate
-#           pip install jinja2-cli
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Weekly Release Update
+          body: |
+            Hello,
 
-#       - name: Format email
-#         id: format_email
-#         run: |
-#           source env/bin/activate
-#           echo "${{ steps.get_release_details.outputs.releases }}" | jinja2 -e yaml - <<EOF
-#           {% for release in releases %}
-#           {{ release.name }}
-#           {{ release.url }}
-#           {{ release.published_at | strftime('%Y-%m-%d %H:%M:%S %z') }}
+            Here are the releases created in the last week:
 
-#           {{ release.body | indent(4) }}
-
-#           {% endfor %}
-#           EOF
-#         shell: bash
-
-#       - name: Send email
-#         uses: dawidd6/action-send-mail@v2.2.0
-#         with:
-#           server_address: smtp.gmail.com
-#           server_port: 587
-#           username: ${{ secrets.EMAIL_USERNAME }}
-#           password: ${{ secrets.EMAIL_PASSWORD }}
-#           subject: Release details for ${GITHUB_REPOSITORY}
-#           body: ${{ steps.format_email.stdout }}
-#           to: sahilvandra.softvan@gmail.com
-#           from: smit.softvan@gmail.com
+            ${{ env.message_body }}
+            
+            Regards,
+            Your GitHub Action
+          to: sahilvandra.softvan@gmail.com
+          from: smit.softvan@gmail.com
