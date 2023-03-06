@@ -20,7 +20,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        python send_release_email.py
+        # python send_release_email.py
         print("hello")
 
     - name: Send email
