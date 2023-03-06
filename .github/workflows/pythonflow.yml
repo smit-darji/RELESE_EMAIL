@@ -21,7 +21,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python send_release_email.py
-        python -c 'print("----------------")'
+    - name : get env
+      run: echo ${{ env.email_body }}
 
     - name: Send email
       uses: dawidd6/action-send-mail@v2
