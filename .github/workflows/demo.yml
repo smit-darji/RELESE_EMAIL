@@ -46,7 +46,7 @@ jobs:
           echo $body >> a.txt
           echo "-------------cat-----------"
           cat a.txt
-          file_contents=$(cat a.txt)
+          file_contents=$(cat -e a.txt)
           echo "---------------file_contents--------------------"
           echo "$file_contents"
       - name: email is 
