@@ -15,7 +15,7 @@ jobs:
       - name: Get release details
         id: get_release_details
         run: |
-          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases)
+          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases")
           echo releases=$(echo $releases | jq -r '.[] | { name: .name, url: .html_url, published_at: .published_at, body: .body }') >> $GITHUB_OUTPUT
       - name: Print
         run: |
