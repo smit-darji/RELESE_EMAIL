@@ -10,8 +10,8 @@ env = Environment(loader=FileSystemLoader('.'))
 api_url = 'https://api.github.com'
 
 # Get the repository name and owner from the environment variables
-repo_name = os.environ.get('GITHUB_REPOSITORY')
-repo_owner = repo_name.split('/')[0]
+# repo_name = os.environ.get('GITHUB_REPOSITORY')
+# repo_owner = repo_name.split('/')[0]
 
 # Set up the authentication headers
 auth_header = {
@@ -37,7 +37,7 @@ releases = [
 
 # Render the email template using Jinja2
 template = env.get_template('release_email_template.j2')
-email_body = template.render(repo_owner=repo_owner, repo_name=repo_name, releases=releases)
+email_body = template.render(repo_owner=smit-darji, repo_name=RELESE_EMAIL, releases=releases)
 
 # Output the email body
 print(email_body)
