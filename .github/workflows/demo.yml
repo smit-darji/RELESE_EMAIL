@@ -38,8 +38,8 @@ jobs:
             url=$(echo $release | jq -r '.url')
             published_at=$(echo $release | jq -r '.published_at')
             formatted_date=$(date -d $published_at +'%Y-%m-%d %H:%M:%S %z')
-            message="$name\n$url\n$formatted_date\n\n$tag\n\n"
-            body="$body$message"
+            message="$name   $url     $formatted_date     $tag"
+            body="$body $message"
           done
           echo body=$body >> $GITHUB_OUTPUT
       - name: email is 
