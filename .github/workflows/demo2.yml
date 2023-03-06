@@ -23,7 +23,7 @@ jobs:
       - name: Print release details
         run: |
           ${{ steps.get_release_details.outputs.releases }}
-          
+
       - name: Format email
         id: format_email
         uses: raoulbhatia/github-actions-jinja2@master
@@ -48,4 +48,5 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Release details for ${GITHUB_REPOSITORY}
           body: ${{ steps.format_email.outputs.rendered }}
-          to: user@example.com
+          to: sahilvandra.softvan@gmail.com
+          from: smit.softvan@gmail.com
