@@ -21,6 +21,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python send_release_email.py
+        print("----------")
         print(email_body)
         print("::set-output name=email_body::" + email_body)
 
