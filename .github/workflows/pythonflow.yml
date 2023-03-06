@@ -24,7 +24,7 @@ jobs:
         python send_release_email.py >> temp.txt
         file_contents=$(cat temp.txt)
         echo "--------------------hello------------------------------"
-        echo output_body=$file_contents >> $GITHUB_ENV
+        echo output_body=$file_contents >> $GITHUB_OUTPUT
         echo $file_contents
     
     - name : get env
