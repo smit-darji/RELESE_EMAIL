@@ -24,7 +24,11 @@ jobs:
       - name: Format email
         id: format_email
         run: |
-          releases=$(echo "${{ steps.get_release_details.outputs.releases }}" | jq -r '.[]')
+          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
+
+          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases")
+
+          releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
           body=""
           for release in $releases; do
             name=$(echo $release | jq -r '.name')
