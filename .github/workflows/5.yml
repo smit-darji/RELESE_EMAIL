@@ -1,50 +1,50 @@
-name: Weekly Release Email with format_details
-on: push
-jobs:
-  send-email:
-    runs-on: ubuntu-latest
-    outputs:
-      message_body: ${{ steps.format_details.outputs.message_body }}
-      contents: ${{ steps.read-file.outputs.contents }}
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+# name: Weekly Release Email with format_details
+# on: push
+# jobs:
+#   send-email:
+#     runs-on: ubuntu-latest
+#     outputs:
+#       message_body: ${{ steps.format_details.outputs.message_body }}
+#       contents: ${{ steps.read-file.outputs.contents }}
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v2
       
-      - name: Format release notes
-        id: format_details
-        run: |
+#       - name: Format release notes
+#         id: format_details
+#         run: |
 
         
-          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
+#           last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
 
-          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases" | jq -r '.[] | "Release \(.tag_name) (\(.name)) is now available. Download it from (\(.html_url))\n Description is :\n\n\(.body)"')
-          echo message_body=$(echo "$releases" | awk '{printf "%s\\n", $0}') >> $GITHUB_OUTPUT
+#           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases" | jq -r '.[] | "Release \(.tag_name) (\(.name)) is now available. Download it from (\(.html_url))\n Description is :\n\n\(.body)"')
+#           echo message_body=$(echo "$releases" | awk '{printf "%s\\n", $0}') >> $GITHUB_OUTPUT
           
-          echo "---------------------------------"
-          # echo message_body=($releases_list) >> $GITHUB_OUTPUT
+#           echo "---------------------------------"
+#           # echo message_body=($releases_list) >> $GITHUB_OUTPUT
 
         
 
-      - name: Print
-        run: |
-          echo -e ${{ steps.format_details.outputs.message_body }}  
+#       - name: Print
+#         run: |
+#           echo -e ${{ steps.format_details.outputs.message_body }}  
 
-      - name: Send Email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Weekly Release Update
-          body: |
-            Hello,
+#       - name: Send Email
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 587
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: Weekly Release Update
+#           body: |
+#             Hello,
 
-            Here are the releases created in the last week:
+#             Here are the releases created in the last week:
 
-            ${{ steps.format_details.outputs.message_body }}
+#             ${{ steps.format_details.outputs.message_body }}
 
-            Regards,
-            Your GitHub Action
-          to: sahilvandra.softvan@gmail.com
-          from: smit.softvan@gmail.com
+#             Regards,
+#             Your GitHub Action
+#           to: sahilvandra.softvan@gmail.com
+#           from: smit.softvan@gmail.com
