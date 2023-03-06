@@ -56,7 +56,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Weekly Release Update
           body: |
-            Hello,
+            Hello, demo
 
             Here are the releases created in the last week:
 
