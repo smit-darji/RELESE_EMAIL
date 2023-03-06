@@ -22,7 +22,7 @@ jobs:
       run: |
         python send_release_email.py
         python -c 'print("----------------")'
-        python -c 'print(email_body)''
+        python -c 'print(email_body)'
 
     - name: Send email
       uses: dawidd6/action-send-mail@v2
