@@ -21,9 +21,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       id: my_step
       run: |
+
         python send_release_email.py
     - name : get env
-      run: echo ${{ steps.my_step.outputs.demo }}
+      run: |
+        echo $demo
+        echo ${{ steps.my_step.outputs.demo }}
 
     - name: Send email
       uses: dawidd6/action-send-mail@v2
