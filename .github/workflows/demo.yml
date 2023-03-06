@@ -5,6 +5,8 @@ on: push
 jobs:
   send_email:
     runs-on: ubuntu-latest
+    outputs:
+      releases: ${{ steps.get_release_details.outputs.releases }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,6 +18,9 @@ jobs:
           releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases?per_page=100&since=$last_week)
           echo "::set-output name=releases::$releases"
 
+      - name: Print release details
+        run: |
+          ${{ steps.get_release_details.outputs.releases }}
       - name: Send email
         uses: dawidd6/action-send-mail@v2.2.0
         with:
