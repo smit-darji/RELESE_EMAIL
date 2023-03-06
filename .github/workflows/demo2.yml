@@ -1,47 +1,47 @@
-name: Weekly Release Email
+# name: Weekly Release Email
 
-on: push
+# on: push
 
-jobs:
-  send-email:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+# jobs:
+#   send-email:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v2
 
-      - name: Format release notes
-        id: format_details
-        run: |
-          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
-          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
+#       - name: Format release notes
+#         id: format_details
+#         run: |
+#           last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
+#           releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
           
-          all_messages=""
-          for release in $(echo "$releases" | jq -c '.[]'); do
-              name=$(echo $release | jq -r '.name')
-              tag=$(echo $release | jq -r '.tag')
-              url=$(echo $release | jq -r '.url')
-              body=$(echo $release | jq -r '.body')    
-              message="Release $name ($tag) is now available. Download it from ($url).\n\n"
-              all_messages="$all_messages$message" 
-          done
-          echo message_body=\"$all_messages\" >> $GITHUB_ENV
+#           all_messages=""
+#           for release in $(echo "$releases" | jq -c '.[]'); do
+#               name=$(echo $release | jq -r '.name')
+#               tag=$(echo $release | jq -r '.tag')
+#               url=$(echo $release | jq -r '.url')
+#               body=$(echo $release | jq -r '.body')    
+#               message="Release $name ($tag) is now available. Download it from ($url).\n\n"
+#               all_messages="$all_messages$message" 
+#           done
+#           echo message_body=\"$all_messages\" >> $GITHUB_ENV
 
-      - name: Send Email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 587
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Weekly Release Update
-          body: |
-            Hello,
+#       - name: Send Email
+#         uses: dawidd6/action-send-mail@v3
+#         with:
+#           server_address: smtp.gmail.com
+#           server_port: 587
+#           username: ${{ secrets.EMAIL_USERNAME }}
+#           password: ${{ secrets.EMAIL_PASSWORD }}
+#           subject: Weekly Release Update
+#           body: |
+#             Hello,
 
-            Here are the releases created in the last week:
+#             Here are the releases created in the last week:
 
-            ${{ env.message_body }}
+#             ${{ env.message_body }}
             
-            Regards,
-            Your GitHub Action
-          to: sahilvandra.softvan@gmail.com
-          from: smit.softvan@gmail.com
+#             Regards,
+#             Your GitHub Action
+#           to: sahilvandra.softvan@gmail.com
+#           from: smit.softvan@gmail.com
