@@ -33,22 +33,15 @@ jobs:
           echo "-------"
           body=""
           for release in $(echo "$releases" | jq -c '.[]'); do
-            name=$(echo $release | jq -r '.name')
-            tag=$(echo $release | jq -r '.tag_name')
-            url=$(echo $release | jq -r '.url')
-            body=$(echo $release | jq -r '.body')            
-            published_at=$(echo $release | jq -r '.published_at')
-            formatted_date=$(date -d $published_at +'%Y-%m-%d %H:%M:%S')
-            message="New version is Release :$name  \n you can Show at : $url . \n relese Date is :$formatted_date.\n\n"
-            body="$body $message"
+              name=$(echo $release | jq -r '.name')
+              tag=$(echo $release | jq -r '.tag')
+              url=$(echo $release | jq -r '.url')
+              published_at=$(echo $release | jq -r '.published_at')
+              formatted_date=$(date -d $published_at +'%Y-%m-%d %H:%M:%S')
+              message="New version is Release :$name  \nyou can Show at : $url. \nrelese Date is :$formatted_date.\n\n"
+              body="$body$message"
           done
           echo body=$body >> $GITHUB_OUTPUT
-          # echo $body >> a.txt
-          # echo "-------------cat-----------"
-          # cat a.txt
-          # file_contents=$(cat -e a.txt)
-          # echo "---------------file_contents--------------------"
-          # echo "$file_contents"
         # shell: bash
           
       - name: email is 
