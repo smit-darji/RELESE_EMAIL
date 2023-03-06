@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       releases: ${{ steps.get_release_details.outputs.releases }}
+      body: ${{ steps.format_email.outputs.body }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -37,7 +38,7 @@ jobs:
             message="$name\n$url\n$formatted_date\n\n$body\n\n"
             body="$body$message"
           done
-          echo "::set-output name=body::$body"
+          echo body=$body >> $GITHUB_OUTPUT
 
       - name: Send email
         uses: dawidd6/action-send-mail@v2.2.0
