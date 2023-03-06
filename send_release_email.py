@@ -43,4 +43,4 @@ email_body = template.render(repo_owner="smit-darji", repo_name="RELESE_EMAIL", 
 print(email_body)
 os.environ['demo'] = email_body
 
-print(f"::set-output name=demo::{email_body}")
+# print(demo={email_body}) >> $GITHUB_OUTPUT

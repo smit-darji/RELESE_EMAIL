@@ -1,3 +1,4 @@
 import os
 
-os.environ['MY_VAR'] = 'sdsdsd'
+output = "Hello, world!"
+os.environ['MY_OUTPUT'] = output

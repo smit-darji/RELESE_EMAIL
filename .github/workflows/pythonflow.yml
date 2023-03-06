@@ -25,7 +25,8 @@ jobs:
         python send_release_email.py
     - name : get env
       run: |
-        echo $demo
+        echo ${{ env.demo }}
+        echo "-------"
         echo ${{ steps.my_step.outputs.demo }}
 
     - name: Send email
