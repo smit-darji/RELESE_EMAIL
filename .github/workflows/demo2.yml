@@ -5,8 +5,6 @@ on: push
 jobs:
   send_email:
     runs-on: ubuntu-latest
-    outputs:
-      releases: ${{ steps.get_release_details.outputs.releases }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -15,11 +13,7 @@ jobs:
         id: get_release_details
         run: |
           releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
-          echo releases=$(echo $releases | jq -r '.[] | { name: .name, url: .html_url, published_at: .published_at, body: .body }') >> $GITHUB_OUTPUT
-
-      - name: Print release details
-        run: |
-          ${{ steps.get_release_details.outputs.releases }}
+          echo "::set-output name=releases::$(echo $releases | jq -r '.[] | { name: .name, url: .html_url, published_at: .published_at, body: .body }')"
 
       - name: Install Jinja2
         run: |
