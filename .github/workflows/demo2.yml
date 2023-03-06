@@ -23,7 +23,7 @@ jobs:
 
       - name: Format email
         id: format_email
-        uses: raoulbhatia/github-actions-jinja2@master
+        uses: marvinpinto/action-jinja2@v2.1.0
         with:
           data: ${{ steps.get_release_details.outputs.releases }}
           template: |
