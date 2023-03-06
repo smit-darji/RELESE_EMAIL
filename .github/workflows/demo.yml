@@ -50,7 +50,7 @@ jobs:
           echo "---------------file_contents--------------------"
           echo "$file_contents"
       - name: email is 
-        run: echo -e ${{ steps.format_email.outputs.body }}
+        run: echo  ${{ steps.format_email.outputs.body }}
 
       - name: Send email
         uses: dawidd6/action-send-mail@v2.2.0
@@ -60,6 +60,6 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Release details for ${GITHUB_REPOSITORY}
-          body: ${{ steps.format_email.outputs.body | sed 's/\\n/\/g' }}
+          body: ${{ steps.format_email.outputs.body  }}
           to: sahilvandra.softvan@gmail.com
           from: smit.softvan@gmail.com
