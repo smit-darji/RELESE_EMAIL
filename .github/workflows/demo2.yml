@@ -27,7 +27,7 @@ jobs:
         id: format_email
         run: |
           source env/bin/activate
-          echo "${{ steps.get_release_details.outputs.releases }}" | jinja2 -e yaml -f - <<EOF
+          echo "${{ steps.get_release_details.outputs.releases }}" | jinja2 -e yaml - <<EOF
           {% for release in releases %}
           {{ release.name }}
           {{ release.url }}
