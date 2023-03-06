@@ -16,7 +16,8 @@ jobs:
           echo "::set-output name=releases::$(echo $releases | jq -r '.[] | { name: .name, url: .html_url, published_at: .published_at, body: .body }')"
 
       - name: print
-        run: echo {{ steps.get_release_details.outputs.releases }} 
+        run: |
+          {{ steps.get_release_details.outputs.releases }} 
       - name: Install Jinja2
         run: |
           python3 -m venv env
