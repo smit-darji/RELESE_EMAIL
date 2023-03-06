@@ -17,11 +17,10 @@ jobs:
         python -m pip install PyGithub jinja2
 
     - name: Get release details
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        # python send_release_email.py
-         python -c 'print("hello")'
+      uses: actions/github-script@v3
+      with:
+          script: |
+              print("hi")
 
     - name: Send email
       uses: dawidd6/action-send-mail@v2
