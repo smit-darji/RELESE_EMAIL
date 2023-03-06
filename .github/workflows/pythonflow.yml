@@ -21,13 +21,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       id: my_step
       run: |
-        python send_release_email.py
-    
-    - name: python 1
-      run: |
         python send_release_email.py >> temp.txt
         file_contents=$(cat temp.txt)
         echo "$file_contents"
+    
     - name : get env
       run: |
         echo ${{ env.demo }}
