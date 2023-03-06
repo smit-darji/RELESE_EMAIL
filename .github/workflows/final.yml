@@ -49,29 +49,29 @@ jobs:
         run: |
           echo -e ${{ steps.format_details.outputs.message_body }}  
       
-      # - name: Install Jinja2
-      #   run: |
-      #     python3 -m venv env
-      #     source env/bin/activate
-      #     pip install jinja2-cli
+      - name: Install Jinja2
+        run: |
+          python3 -m venv env
+          source env/bin/activate
+          pip install jinja2-cli
 
-      # - name: Format email
-      #   id: format_email
-      #   run: |
-      #     source env/bin/activate
-      #     echo "${{ steps.get_release_details.outputs.releases }}" | jinja2 -e yaml -f - <<EOF
-      #     {% for release in releases %}
-      #     {{ release.name }}
-      #     {{ release.url }}
-      #     {{ release.published_at | strftime('%Y-%m-%d %H:%M:%S %z') }}
+      - name: Format email
+        id: format_email
+        run: |
+          source env/bin/activate
+          echo "${{ steps.get_release_details.outputs.releases }}" | jinja2 -e yaml -f - <<EOF
+          {% for release in releases %}
+          {{ release.name }}
+          {{ release.url }}
+          {{ release.published_at | strftime('%Y-%m-%d %H:%M:%S %z') }}
 
-      #     {{ release.body | indent(4) }}
+          {{ release.body | indent(4) }}
 
-      #     {% endfor %}
-      #     EOF
-      #   shell: bash
-      # - name: print
-      #   run: echo ${{ steps.format_email.stdout }}
+          {% endfor %}
+          EOF
+        shell: bash
+      - name: print
+        run: echo ${{ steps.format_email.stdout }}
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
