@@ -1,4 +1,4 @@
-# name: Send release details
+name: Send release details
 
 on: push
 
