@@ -15,7 +15,7 @@ jobs:
         id: get_release_details
         run: |
           releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases)
-          echo "releases:"releases
+          echo "releases:"$releases
           echo "---------------------"
           echo releases=$releases >> $GITHUB_OUTPUT
 
