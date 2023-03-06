@@ -19,15 +19,22 @@ jobs:
           
           all_messages=""
           for release in $(echo "$releases" | jq -c '.[]'); do
-              name=$(echo "$release" | jq -r '.name')
-              tag=$(echo "$release" | jq -r '.tag')
-              url=$(echo "$release" | jq -r '.url')
-              body=$(echo "$release" | jq -r '.body')    
+              name=$(echo $release | jq -r '.name')
+              tag=$(echo $release | jq -r '.tag')
+              url=$(echo $release | jq -r '.url')
+              body=$(echo $release | jq -r '.body')    
               message="Release $name ($tag) is now available. Download it from ($url)}.\n Description is :$body\n\n"
               all_messages="$all_messages$message" 
           done
           echo message_body=\"$all_messages\" >> $GITHUB_OUTPUT
           echo "------------------------------------"
+          echo $message_body >> a.txt
+          file_contents=$(cat a.txt)
+          echo "-------"
+          echo  "cat -------------------------------finish"
+          echo "-------"
+          echo "$file_contents"
+          rm a.txt
       - name: Print
         run: |
           echo -e ${{ steps.format_details.outputs.message_body }}  
