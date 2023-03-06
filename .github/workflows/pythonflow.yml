@@ -23,7 +23,7 @@ jobs:
       run: |
         python send_release_email.py >> temp.txt
         file_contents=$(cat temp.txt)
-        echo "----------"
+        echo "--------------------hello------------------------------"
         echo $file_contents
     
     - name : get env
