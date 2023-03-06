@@ -12,9 +12,8 @@ jobs:
       - name: Format release notes
         id: format_details
         run: |
-          last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
-          releases=$(curl -s "https://api.github.com/repos/:owner/:repo/releases?per_page=100&since=$last_week")
-          releases=$(echo $releases | jq -r '.[] | {name: .name, tag: .tag_name, url: .html_url, body: .body} | @json' | jq -s .)
+         last_week=`date -d "last week" "+%Y-%m-%dT%H:%M:%SZ"`
+          releases=$(curl -s "https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases?per_page=100&since=$last_week")
           
           all_messages=""
           for release in $(echo "$releases" | jq -c '.[]'); do
