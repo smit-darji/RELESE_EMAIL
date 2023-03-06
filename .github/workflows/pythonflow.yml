@@ -7,51 +7,56 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       message_body: ${{ steps.format_details.outputs.message_body }}
-      contents: ${{ steps.read-file.outputs.contents }}
+      changelog: ${{ steps.step1.outputs.changelog }}
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Install dependencies
-      run: |
-        python -m pip install PyGithub jinja2
-
-    - name: Get release details
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      id: my_step
-      run: |
-
-        python send_release_email.py
-    - name: python 1
-      run: |
+      - uses: actions/checkout@v2.1.0
+      - run: |
           output=$(python release_mail_generator.py v2.21)
           output="${output//'%'/'%25'}"
           output="${output//$'\n'/'%0A'}"
           output="${output//$'\r'/'%0D'}" 
-          echo $output
-    - name : get env
-      run: |
-        echo ${{ env.demo }}
-        echo "-------"
-        echo ${{ steps.my_step.outputs.demo }}
+          echo changelog=$output >> $GITHUB_ENV
+        id: step1
+      
+      - name: Print changelog
+        run: echo "${{ steps.step1.outputs.changelog }}"
 
-    - name: Send email
-      uses: dawidd6/action-send-mail@v2
-      with:
-        server_address: smtp.gmail.com
-        server_port: 465
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: Latest Release Details
-        body: |
-            Hello, final
+      - name: Install dependencies
+        run: |
+          python -m pip install PyGithub jinja2
 
-            Here are the releases created in the last week:
-            
-            this is python
-            
-            Regards,
-            Your GitHub Action
-        to: sahilvandra.softvan@gmail.com
-        from: smit.softvan@gmail.com
+      - name: Get release details
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: my_step
+        run: |
+
+          python send_release_email.py
+      - name: python 1
+
+        id: step1
+      - name : get env
+        run: |
+          echo ${{ env.demo }}
+          echo "-------"
+          echo ${{ steps.my_step.outputs.demo }}
+
+      - name: Send email
+        uses: dawidd6/action-send-mail@v2
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Latest Release Details
+          body: |
+              Hello, final
+
+              Here are the releases created in the last week:
+
+              this is python
+
+              Regards,
+              Your GitHub Action
+          to: sahilvandra.softvan@gmail.com
+          from: smit.softvan@gmail.com
