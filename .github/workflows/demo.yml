@@ -60,6 +60,6 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Release details for ${GITHUB_REPOSITORY}
-          body: ${{ steps.format_email.outputs.body }}
+          body: ${{ steps.format_email.outputs.body | tr '\n' '\r\n' }}
           to: sahilvandra.softvan@gmail.com
           from: smit.softvan@gmail.com
