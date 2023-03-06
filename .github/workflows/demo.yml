@@ -55,7 +55,15 @@ jobs:
           server_port: 587
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Release details for ${GITHUB_REPOSITORY}
-          body: ${{ steps.format_email.outputs.body  }}
+          subject: Weekly Release Update
+          body: |
+            Hello,
+
+            Here are the releases created in the last week:
+
+            ${{ steps.format_email.outputs.body  }}
+
+            Regards,
+            Your GitHub Action
           to: sahilvandra.softvan@gmail.com
           from: smit.softvan@gmail.com
