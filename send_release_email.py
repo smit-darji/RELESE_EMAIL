@@ -25,7 +25,7 @@ start_date = end_date - timedelta(days=7)
 
 # Query the GitHub API for releases in the last week
 response = requests.get(
-    f'{api_url}/repos/{repo_owner}/{repo_name}/releases',
+    f'{api_url}/repos/smit-darji/RELESE_EMAIL/releases',
     headers=auth_header
 )
 
