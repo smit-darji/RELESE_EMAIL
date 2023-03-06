@@ -34,3 +34,4 @@ jobs:
             ${{ steps.get_release_details.outputs.releases }}
           to: sahilvandra.softvan@gmail.com
           from: smit.softvan@gmail.com
+          
