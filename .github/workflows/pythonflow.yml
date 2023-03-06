@@ -25,6 +25,7 @@ jobs:
         file_contents=$(cat temp.txt)
         echo "--------------------hello------------------------------"
         echo output_body=$file_contents >> $GITHUB_ENV
+        echo $file_contents
     
     - name : get env
       run: |
