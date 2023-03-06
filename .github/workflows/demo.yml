@@ -49,6 +49,7 @@ jobs:
           file_contents=$(cat -e a.txt)
           echo "---------------file_contents--------------------"
           echo "$file_contents"
+          
       - name: email is 
         run: echo  ${{ steps.format_email.outputs.body }}
 
