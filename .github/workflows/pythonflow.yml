@@ -21,6 +21,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python send_release_email.py
+        print("hello")
 
     - name: Send email
       uses: dawidd6/action-send-mail@v2
@@ -30,6 +31,14 @@ jobs:
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: Latest Release Details
-        body: ${{ steps.get_release_details.outputs.email_body }}
+        body: |
+            Hello, final
+
+            Here are the releases created in the last week:
+            
+            this is python
+            
+            Regards,
+            Your GitHub Action
         to: sahilvandra.softvan@gmail.com
         from: smit.softvan@gmail.com
