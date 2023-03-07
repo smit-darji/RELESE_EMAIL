@@ -1,7 +1,7 @@
 import os
 import requests
-from datetime import datetime, timedelta
 from jinja2 import Environment, FileSystemLoader
+import smtplib
 
 # Set up the Jinja2 environment
 env = Environment(loader=FileSystemLoader('.'))
@@ -19,27 +19,30 @@ auth_header = {
     'Accept': 'application/vnd.github.v3+json'
 }
 
-# Define the start and end dates for the release query
-end_date = datetime.now()
-start_date = end_date - timedelta(days=7)
-
-# Query the GitHub API for releases in the last week
+# Query the GitHub API for the latest release
 response = requests.get(
-    f'{api_url}/repos/smit-darji/RELESE_EMAIL/releases',
+    f'{api_url}/repos/smit-darji/RELESE_EMAIL/releases/latest',
     headers=auth_header
 )
 
-# Filter the releases by date
-releases = [
-    release for release in response.json()
-    if start_date <= datetime.fromisoformat(release['published_at'][:-1]) <= end_date
-]
+# Get the details of the latest release (if there are any releases
+release = response.json()
+name = release['name']
+tag = release['tag_name']
+url = release['html_url']
+body = release['body']
 
 # Render the email template using Jinja2
 template = env.get_template('release_email_template.j2')
-email_body = template.render(repo_owner="smit-darji", repo_name="RELESE_EMAIL", releases=releases)
+email_body = template.render(repo_owner="smit-darji", repo_name="RELESE_EMAIL", name=name, tag=tag, url=url, body=body)
 
 # Output the email body
 print(email_body)
+os.environ['demo'] = email_body
 
-# print(demo={email_body}) >> $GITHUB_OUTPUT
+# Send the email
+s = smtplib.SMTP('smtp.gmail.com', 587)
+s.starttls()
+s.login("smit.softvan@gmail.com", "wkyjrlcyhsvajarh")
+s.sendmail("smit.softvan@gmail.com", "sahilvandra.softvan@gmail.com", email_body)
+s.quit()
