@@ -26,5 +26,5 @@ jobs:
           SMTP_USERNAME: ${{ secrets.EMAIL_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           SENDER_EMAIL: smit.softvan@gmail.com
-          RECIPIENT_EMAIL: sahilvandra.softvan@example.com
+          RECIPIENT_EMAIL: sahilvandra.softvan@gmail.com
         run: python generate_release_email.py
