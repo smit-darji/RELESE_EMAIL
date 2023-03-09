@@ -38,8 +38,8 @@ print(email_body)
 # Send the email using SMTP
 smtp_server = os.environ.get('SMTP_SERVER')
 smtp_port = os.environ.get('SMTP_PORT')
-smtp_username = os.environ.get('EMAIL_USERNAME')
-smtp_password = os.environ.get('EMAIL_PASSWORD')
+smtp_username = os.environ.get('SMTP_USERNAME')
+smtp_password = os.environ.get('SMTP_PASSWORD')
 sender_email = os.environ.get('SENDER_EMAIL')
 recipient_email = os.environ.get('RECIPIENT_EMAIL')
 
