@@ -1,17 +1,12 @@
-import os
 import requests
-from jinja2 import Environment, FileSystemLoader
-import smtplib
+import os
 
-# Set up the Jinja2 environment
-env = Environment(loader=FileSystemLoader('.'))
+# Define the repository details
+repo_name = "smit-darji"
+repo_owner = "RELESE_EMAIL"
 
 # Define the GitHub API endpoint
-api_url = 'https://api.github.com'
-
-# Get the repository name and owner from the environment variables
-# repo_name = os.environ.get('GITHUB_REPOSITORY')
-# repo_owner = repo_name.split('/')[0]
+api_url = f'https://api.github.com/repos/smit-darji/RELESE_EMAIL/releases/latest'
 
 # Set up the authentication headers
 auth_header = {
@@ -20,29 +15,19 @@ auth_header = {
 }
 
 # Query the GitHub API for the latest release
-response = requests.get(
-    f'{api_url}/repos/smit-darji/RELESE_EMAIL/releases/latest',
-    headers=auth_header
-)
+response = requests.get(api_url, headers=auth_header)
 
-# Get the details of the latest release (if there are any releases
-release = response.json()
-name = release['name']
-tag = release['tag_name']
-url = release['html_url']
-body = release['body']
-
-# Render the email template using Jinja2
-template = env.get_template('release_email_template.j2')
-email_body = template.render(repo_owner="smit-darji", repo_name="RELESE_EMAIL", name=name, tag=tag, url=url, body=body)
-
-# Output the email body
-print(email_body)
-os.environ['demo'] = email_body
-
-# Send the email
-s = smtplib.SMTP('smtp.gmail.com', 587)
-s.starttls()
-s.login("smit.softvan@gmail.com", "wkyjrlcyhsvajarh")
-s.sendmail("smit.softvan@gmail.com", "sahilvandra.softvan@gmail.com", email_body)
-s.quit()
+# Check if the request was successful
+if response.status_code == requests.codes.ok:
+    # Extract the relevant details from the response
+    release_data = response.json()
+    release_tag = release_data['tag_name']
+    release_name = release_data['name']
+    release_body = release_data['body']
+    
+    # Print the release details
+    print(f'Latest release: {release_name} ({release_tag})')
+    print(f'Release notes: {release_body}')
+else:
+    # Print an error message
+    print(f'Error: {response.status_code} - {response.text}')

@@ -21,7 +21,7 @@ jobs:
           pip install jinja2
       - name: Generate release email
         env:
-          GITHUB_TOKEN: ${{ secrets.github }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB }}
           SMTP_SERVER: smtp.gmail.com
           SMTP_PORT: 587
           SMTP_USERNAME: ${{ secrets.EMAIL_USERNAME }}

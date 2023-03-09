@@ -16,9 +16,9 @@ start_date = end_date - datetime.timedelta(days=7)
 
 # Make a GET request to the GitHub API to retrieve the releases
 api_url = 'https://api.github.com'
-
+github_token="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"
 auth_header = {
-    'Authorization': f'token {os.environ.get("GITHUB_TOKEN")}',
+    'Authorization': f'token {github_token}',
     'Accept': 'application/vnd.github.v3+json'
 }
 
