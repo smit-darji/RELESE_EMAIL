@@ -3,6 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from jinja2 import Environment, FileSystemLoader
 import smtplib
+import requests
 
 # Set up the Jinja2 environment
 env = Environment(loader=FileSystemLoader('.'))
