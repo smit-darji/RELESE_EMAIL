@@ -4,6 +4,7 @@ on: push
 #   schedule:
 #     - cron: '0 0 * * 0' # Run every Sunday at midnight UTC
 
+
 jobs:
   send_release_email:
     runs-on: ubuntu-latest
