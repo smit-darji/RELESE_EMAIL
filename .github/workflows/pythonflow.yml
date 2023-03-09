@@ -1,53 +1,53 @@
-name: Send Latest Release Details
+# name: Send Latest Release Details
 
-on:  push
+# on:  push
 
-jobs:
-  send_email:
-    runs-on: ubuntu-latest
-    outputs:
-      message_body: ${{ steps.format_details.outputs.message_body }}
-      output_body: ${{ steps.read-file.outputs.output_body }}
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+# jobs:
+#   send_email:
+#     runs-on: ubuntu-latest
+#     outputs:
+#       message_body: ${{ steps.format_details.outputs.message_body }}
+#       output_body: ${{ steps.read-file.outputs.output_body }}
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: |
-        python -m pip install PyGithub jinja2
+#     - name: Install dependencies
+#       run: |
+#         python -m pip install PyGithub jinja2
 
-    - name: Get release details
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      id: my_step
-      run: |
-        python send_release_email.py >> temp.txt
-        file_contents=$(cat temp.txt)
-        echo "--------------------hello------------------------------"
-        echo output_body=$file_contents >> $GITHUB_OUTPUT
-        echo $file_contents
+#     - name: Get release details
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       id: my_step
+#       run: |
+#         python send_release_email.py >> temp.txt
+#         file_contents=$(cat temp.txt)
+#         echo "--------------------hello------------------------------"
+#         echo output_body=$file_contents >> $GITHUB_OUTPUT
+#         echo $file_contents
     
-    - name : get env
-      run: |
-        echo ${{ steps.my_step.outputs.output_body }}
+#     - name : get env
+#       run: |
+#         echo ${{ steps.my_step.outputs.output_body }}
 
-    - name: Send email
-      uses: dawidd6/action-send-mail@v2
-      with:
-        server_address: smtp.gmail.com
-        server_port: 465
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: Latest Release Details
-        body: |
-            Hello, final
+#     - name: Send email
+#       uses: dawidd6/action-send-mail@v2
+#       with:
+#         server_address: smtp.gmail.com
+#         server_port: 465
+#         username: ${{ secrets.EMAIL_USERNAME }}
+#         password: ${{ secrets.EMAIL_PASSWORD }}
+#         subject: Latest Release Details
+#         body: |
+#             Hello, final
 
-            Here are the releases created in the last week:
+#             Here are the releases created in the last week:
             
-            ${{ steps.my_step.outputs.output_body }}
+#             ${{ steps.my_step.outputs.output_body }}
             
-            Regards,
-            Your GitHub Action
-        to: sahilvandra.softvan@gmail.com
-        from: smit.softvan@gmail.com
+#             Regards,
+#             Your GitHub Action
+#         to: sahilvandra.softvan@gmail.com
+#         from: smit.softvan@gmail.com
 

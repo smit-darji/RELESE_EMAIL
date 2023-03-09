@@ -1,0 +1,29 @@
+name: Send release email
+
+on: push
+#   schedule:
+#     - cron: '0 0 * * 0' # Run every Sunday at midnight UTC
+
+jobs:
+  send_release_email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Generate release email
+        env:
+          GITHUB_TOKEN: ${{ secrets.github }}
+          SMTP_SERVER: smtp.gmail.com
+          SMTP_PORT: 587
+          SMTP_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          SENDER_EMAIL: smit.softvan@gmail.com
+          RECIPIENT_EMAIL: sahilvandra.softvan@example.com
+        run: python generate_release_email.py
